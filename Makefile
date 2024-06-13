@@ -4,21 +4,20 @@ SCRIPTS_DIR = scripts
 CONFIG_DIR = $(SCRIPTS_DIR)/config
 
 # Targets
-all: preprocess feature_engineering analysis analysis_script
+all: preprocess feature_engineering analysis
 
 preprocess:
-    $(PYTHON) $(SCRIPTS_DIR)/data_preprocessing.py
+	$(PYTHON) $(SCRIPTS_DIR)/data_preprocessing.py
 
 feature_engineering:
-    $(PYTHON) $(SCRIPTS_DIR)/feat_eng.py
+	$(PYTHON) $(SCRIPTS_DIR)/feat_eng.py
 
 analysis:
-    $(PYTHON) $(SCRIPTS_DIR)/main.py
-
-analysis_script:
-    $(PYTHON) $(SCRIPTS_DIR)/analysis.py
+	$(PYTHON) $(SCRIPTS_DIR)/analysis.py
 
 clean:
-    rm -rf logs/*   # Clean up all files in the logs directory
+	# Optionally add commands to clean up temporary files or logs
+	rm -rf logs/*   # Example: Clean up all files in the logs directory
 
-.PHONY: all preprocess feature_engineering analysis analysis_script clean
+.PHONY: all preprocess feature_engineering analysis clean
+
