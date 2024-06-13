@@ -1,8 +1,11 @@
 import logging
 from data_preprocessing import preprocess_data, setup_logging
 import pandas as pd
-from scripts.feat_eng import *
-from scripts.config.config import Config
+from feat_eng import *
+from config.config import Config
+from feat_eng import preprocess_data, perform_feature_engineering
+from analysis import perform_analysis
+import logging
 
 def main() -> None:
     """
@@ -54,3 +57,40 @@ def main():
 if __name__ == "__main__":
     main()
 
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+def main():
+    try:
+        # Preprocess data and perform feature engineering
+        df1 = pd.read_csv(Config.DF1_PATH)
+        df2 = pd.read_csv(Config.DF2_PATH)
+        
+        df_feat_eng = preprocess_data(df1, df2)
+        df_feat_eng = perform_feature_engineering(df_feat_eng)
+        
+        # Perform analysis
+        df_analysis, riders_count = perform_analysis(df_feat_eng)
+        
+        # Save or further process df_analysis if needed
+        df_analysis.to_csv("analysis_results.csv", index=False)
+        
+        logger.info("Analysis completed successfully.")
+        logger.info(f"Number of riders within {Config.RADIUS} km of accepted orders: {riders_count}")
+
+    except Exception as e:
+        logger.error(f"Error in main process: {str(e)}")
+
+if __name__ == "__main__":
+    main()
+
+
+
+if __name__ == "__main__":
+    # Example usage
+    df_feat_eng = pd.read_csv(Config.FEATURE_ENG_DATA_PATH)
+    df_analysis, riders_count = perform_analysis(df_feat_eng)
+    # Further processing or saving
+    print(df_analysis.head())
+    print(f"Number of riders within {Config.RADIUS} km of accepted orders: {riders_count}")

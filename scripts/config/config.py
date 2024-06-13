@@ -31,3 +31,5 @@ class Config:
         '2022-07-11', '2022-07-12', '2022-10-01', '2022-10-03', '2022-10-08', '2022-10-09',
         '2022-10-10', '2022-12-25', '2022-12-26', '2022-12-27'
     ]
+    
+    RADIUS = 0.5  # Radius in kilometers for counting riders around accepted orders
