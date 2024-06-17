@@ -1,8 +1,9 @@
+# feature.py
+
 import pandas as pd
 from geopy.distance import geodesic
 from sklearn.preprocessing import StandardScaler
 import logging
-from typing import Tuple
 from config.config import Config
 
 # Configure logging
