@@ -1,0 +1,71 @@
+name: CML Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cml_run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Initialize Database
+        run: |
+          psql -h ${{ secrets.DB_HOST }} -U ${{ secrets.DB_USER }} -d ${{ secrets.DB_NAME }} -f scripts/sql_integration/init.sql
+
+      - name: Load Data
+        run: |
+          python scripts/load_data.py
+
+      - name: Preprocess Data
+        run: |
+          python scripts/data_preprocessing.py
+
+      - name: Feature Engineering
+        run: |
+          python scripts/feature_engineering.py
+
+      - name: Train Models
+        run: |
+          python scripts/models/train_models.py
+
+      - name: Run Integration Scripts
+        run: |
+          python scripts/int/script1.py
+          python scripts/int/script2.py
+          # Add more integration scripts as needed
+
+      - name: Run Tests
+        run: |
+          python -m unittest discover -s tests -p "test_*.py"
+
+      - name: Generate MLFlow Report
+        run: |
+          python scripts/mlflow_report.py
+          cat mlflow_report.txt
+        env:
+          MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+          MLFLOW_EXPERIMENT_NAME: "Your Experiment Name"
+
+      - name: Push Report to Repository
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add mlflow_report.txt
+          git commit -m "Add MLFlow report"
+          git push
