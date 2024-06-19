@@ -3,6 +3,8 @@ PYTHON = python3
 SCRIPTS_DIR = scripts
 CONFIG_DIR = $(SCRIPTS_DIR)/config
 SQL_DIR = $(SCRIPTS_DIR)/sql_integration
+MODELS_DIR = $(SCRIPTS_DIR)/models  # New models directory
+INT_DIR = $(SCRIPTS_DIR)/int  # New int directory
 TESTS_DIR = tests
 
 # Targets
@@ -23,6 +25,16 @@ feature_engineering:
 analysis:
     $(PYTHON) $(SCRIPTS_DIR)/analysis.py
 
+# New target for models
+train_models:
+    $(PYTHON) $(MODELS_DIR)/train_models.py
+
+# New target for integration scripts
+run_int_scripts:
+    $(PYTHON) $(INT_DIR)/script1.py
+    $(PYTHON) $(INT_DIR)/script2.py
+    # Add more scripts as needed
+
 test:
     $(PYTHON) -m unittest discover -s $(TESTS_DIR) -p "test_*.py"
 
@@ -30,4 +42,5 @@ clean:
     # Optionally add commands to clean up temporary files or logs
     rm -rf logs/*   # Example: Clean up all files in the logs directory
 
-.PHONY: all init_db load_data preprocess feature_engineering analysis test clean
+.PHONY: all init_db load_data preprocess feature_engineering analysis train_models run_int_scripts test clean
+
