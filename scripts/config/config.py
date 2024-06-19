@@ -33,3 +33,7 @@ class Config:
     ]
     
     RADIUS = 0.5  # Radius in kilometers for counting riders around accepted orders
+
+    DATA_FILE_PATH = '/home/moraa/Documents/10_academy/Week-8/artifacts/df_merged.csv'
+    LOG_FILE_PATH = 'logs/app.log'
+    # Add other configuration parameters as needed

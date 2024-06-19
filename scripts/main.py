@@ -13,6 +13,14 @@ import logging
 from feat_eng import preprocess_datetime, extract_day_of_week, extract_hour_and_time_of_day, create_is_holiday_feature, preprocess_trip_times, split_origin_destination, extract_additional_time_features, calculate_trip_duration, merge_and_calculate_distances, scale_features
 import os
 
+import logging
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from scripts.models.evaluation import evaluate_model
+from config import Config
+from models.preprocessing import preprocess_data
+
 # Load environment variables from .env file
 load_dotenv()
 
@@ -236,6 +244,40 @@ def main():
 
     except Exception as e:
         print(f"Error in main process: {e}")
+
+if __name__ == "__main__":
+    main()
+
+
+def setup_logging():
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+def main():
+    try:
+        setup_logging()
+
+        # Example: Load data
+        df = pd.read_csv(Config.DATA_FILE_PATH)
+        
+        # Example: Preprocess data
+        X, y = preprocess_data(df)
+        
+        # Example: Split data into training and testing sets
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+        # Example: Initialize and train a model (Random Forest)
+        model = RandomForestClassifier(random_state=42, n_jobs=-1)
+        model.fit(X_train, y_train)
+
+        # Example: Evaluate the model
+        evaluate_model(model, X_test, y_test)
+
+        # Optionally, save the trained model
+        # model.save_model(Config.MODEL_SAVE_PATH)
+
+    except Exception as e:
+        logging.error(f"Error in main execution: {e}")
+        raise RuntimeError(f"Error in main execution: {e}")
 
 if __name__ == "__main__":
     main()
