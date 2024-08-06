@@ -1,7 +1,7 @@
 # Gokada Last Mile Delivery Optimization Project
 
 ## Overview
-The Gokada Last Mile Delivery Optimization Project aims to enhance delivery fulfillment rates by analyzing historical data and leveraging advanced analytics techniques. This project is conducted as part of [your organization or training program].
+The Gokada Last Mile Delivery Optimization Project aims to enhance delivery fulfillment rates by analyzing historical data and leveraging advanced analytics techniques.
 
 ### Business Need
 Gokada is the largest last mile delivery service in Nigeria, facing challenges with sub-optimal pilot (driver) placement leading to high rates of unfulfilled delivery requests. This project seeks to identify root causes of unfulfilled orders and propose data-driven solutions to improve operational efficiency.
